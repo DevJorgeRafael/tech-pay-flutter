@@ -1,5 +1,9 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_pay/core/theme/app_theme.dart';
+import 'package:tech_pay/features/auth/data/datasources/auth_remote_datasource_mock.dart';
 import 'package:tech_pay/shared/services/auth_token_service.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
 import 'features/auth/data/datasources/auth_remote_datasource.dart';
@@ -18,10 +22,20 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DioClient.instance);
   sl.registerLazySingleton(() => AuthTokenService());
   sl.registerSingleton<AppTheme>(AppTheme());
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
+  
+   // Registrar SharedPreferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerSingleton<SharedPreferences>(sharedPreferences);
 
   // -------------------- Datasources --------------------
+  final isDev = dotenv.env['IS_DEV'] == 'true';
+  print('isDev: $isDev');
+
   sl.registerLazySingleton<AuthRemoteDataSource>(
-      () => AuthRemoteDataSourceImpl(dio: sl()));
+      () => isDev ? AuthRemoteDatasourceMock(storage: sl(), sharedPreferences: sl()) : 
+      AuthRemoteDataSourceImpl(storage: sl(), sharedPreferences: sl())
+  );
 
   // -------------------- Repositorios --------------------
   sl.registerLazySingleton<AuthRepository>(
@@ -33,9 +47,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
 
   // -------------------- Providers -----------------------
-  sl.registerFactory(() => AuthProvider(
-        loginUseCase: sl(),
-        isLoggedInUseCase: sl(),
-        logoutUseCase: sl(),
-      ));
+  sl.registerLazySingleton<AuthProvider>(
+    () => AuthProvider(
+      loginUseCase: sl(),
+      isLoggedInUseCase: sl(),
+      logoutUseCase: sl(), 
+    )..loadUser(), 
+  );
 }
