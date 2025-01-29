@@ -5,7 +5,7 @@ import 'package:tech_pay/features/auth/presentation/widgets/custom_input.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    // Asegúrate de liberar los recursos de los controladores al salir de la página
+    // liberar los recursos de los controladores al salir de la página
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -38,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await authProvider.login(email, password);
-
       // Si el login es exitoso, navegar a la página principal
       context.go('/home');
     } catch (e) {
@@ -85,8 +84,8 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         SizedBox(height: 50),
         Text(
           'TechPay',
@@ -172,19 +171,11 @@ class _Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        Text(
-          '¿Olvidaste tu contraseña?',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.blue,
-            decoration: TextDecoration.underline,
-          ),
-        ),
         SizedBox(height: 20),
         Text(
           'Términos y condiciones de uso',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 16,
             color: Colors.grey,
           ),
         ),

@@ -1,25 +1,31 @@
-import '../../domain/entities/user.dart';
+import 'dart:convert';
 
-class UserModel extends User {
+import 'package:tech_pay/features/auth/domain/entities/usuario.dart';
+
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+
+String userModelToJson(UserModel data) => json.encode(data.toJson());
+
+class UserModel {
+  final int code;
+  final Usuario usuario;
+  final String token;
+
   UserModel({
-    required String id,
-    required String name,
-    required String email,
-  }) : super(id: id, name: name, email: email);
+    required this.code,
+    required this.usuario,
+    required this.token,
+  });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-    );
-  }
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        code: json["code"],
+        usuario: Usuario.fromJson(json["usuario"]),
+        token: json["token"],
+      );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "usuario": usuario.toJson(),
+        "token": token,
+      };
 }

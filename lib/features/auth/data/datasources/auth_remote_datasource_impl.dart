@@ -1,22 +1,30 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tech_pay/features/auth/domain/entities/usuario.dart';
+import 'package:tech_pay/shared/services/dio_client.dart';
 import '../models/user_model.dart';
 import 'auth_remote_datasource.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final Dio dio;
+  final Dio dio = DioClient.instance;
+  final FlutterSecureStorage storage;
+  final SharedPreferences sharedPreferences;
 
-  AuthRemoteDataSourceImpl({required this.dio});
+  AuthRemoteDataSourceImpl({required this.storage, required this.sharedPreferences});
 
   @override
-  Future<UserModel> login(String email, String password) async {
+  Future<Usuario> login(String email, String password) async {
     try {
       final response = await dio.post('/auth/login', data: {
-        'email': email,
+        'correo': email,
         'password': password,
       });
 
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data);
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        return Usuario.fromJson(response.data['usuario']);
       } else {
         throw Exception('Error al iniciar sesión: ${response.data['message']}');
       }
@@ -42,5 +50,38 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       return false; // Si no se puede validar, asumimos que el token no es válido
     }
+  }
+  
+  @override
+  Future<void> saveToken(String token) async {
+    await storage.write(key: 'pp-token', value: token);
+  }
+
+  @override
+  Future<String?> getToken() async {
+    return await storage.read(key: 'pp-token');
+  }
+  
+  @override
+  Future<void> deleteToken() async {
+    await storage.delete(key: 'pp-token');
+  }
+  
+  @override
+  Future<void> saveUser(UserModel user) async {
+    final userData = jsonEncode(user.toJson());
+    await sharedPreferences.setString('user', userData);
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    await sharedPreferences.remove('user');
+  }
+  
+  @override
+  Future<UserModel?> getUser() async {
+    final userData = sharedPreferences.getString('user');
+    if(userData == null) return null;
+    return UserModel.fromJson(jsonDecode(userData));
   }
 }

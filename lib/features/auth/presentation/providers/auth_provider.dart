@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/user.dart';
+import '../../domain/entities/usuario.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/is_logged_in_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
@@ -18,18 +18,22 @@ class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  User? _user;
-  User? get user => _user;
+  Usuario? _user;
+  Usuario? get user => _user;
 
   Future<void> login(String email, String password) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _user = await loginUseCase(email, password);
+      // Realiza el login a través del caso de uso
+      final user = await loginUseCase(email, password);
+
+      // Actualiza el estado con el usuario autenticado
+      _user = user;
+      notifyListeners();
     } catch (e) {
-      // Manejo de errores
-      print('Error en login: $e');
+      throw Exception('Error en el inicio de sesión: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -48,6 +52,16 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> loadUser() async {
+    final storedUser = await loginUseCase.repository.getStoredUser();
+    print('Usuario almacenado desde auth_provider ---------> $storedUser');
+    if (storedUser != null) {
+      _user = storedUser;
+      notifyListeners();
+    }
+  }
+
+
   Future<void> logout() async {
     _isLoading = true;
     notifyListeners();
@@ -56,7 +70,6 @@ class AuthProvider with ChangeNotifier {
       await logoutUseCase();
       _user = null;
     } catch (e) {
-      // Manejo de errores
       print('Error en logout: $e');
     } finally {
       _isLoading = false;
