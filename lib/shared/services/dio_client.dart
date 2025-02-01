@@ -26,7 +26,7 @@ class DioClient {
         if(!options.headers.containsKey('tech-token')) {
           final token = await AuthTokenService.getToken();
           if(token != null) {
-            options.headers['tech-token'] = token;
+            options.headers['pp-token'] = token;
           }
         }
 
