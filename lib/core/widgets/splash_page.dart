@@ -14,7 +14,8 @@ class SplashPage extends StatelessWidget {
 
     return const Scaffold(
       body: Center(
-        child: Text('TechPay')
+        child:
+            CircularProgressIndicator(), // 🔵 Indicador de carga para mejor UX
       ),
     );
   }
@@ -23,17 +24,20 @@ class SplashPage extends StatelessWidget {
     final authProvider = sl<AuthProvider>();
 
     try {
+      await Future.delayed(const Duration(seconds: 1)); // 🔥 Pequeño delay para evitar carga rápida sin datos
       final isLoggedIn = await authProvider.isLoggedIn();
+      print('🔍 isLoggedIn desde SplashPage: $isLoggedIn');
+      print('👤 Usuario actual en AuthProvider: ${authProvider.user}');
 
-      if(context.mounted) {
-        if(isLoggedIn){
+      if (context.mounted) {
+        if (isLoggedIn && authProvider.user != null) {
           context.go('/home');
         } else {
           context.go('/login');
         }
       }
     } catch (e) {
-      if(context.mounted) {
+      if (context.mounted) {
         context.go('/login');
       }
     }
