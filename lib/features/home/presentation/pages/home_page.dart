@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tech_pay/features/auth/domain/entities/usuario_entity.dart';
 import 'package:tech_pay/features/auth/presentation/providers/auth_provider.dart';
-import 'package:tech_pay/features/home/presentation/views/api_keys_view.dart';
+import 'package:tech_pay/features/home/presentation/views/clientes_view.dart';
 import 'package:tech_pay/features/home/presentation/views/transacciones_view.dart';
 import 'package:tech_pay/injection_container.dart';
 import 'package:go_router/go_router.dart';
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Transacciones' : 'API Keys', style: const TextStyle(color: Colors.white),),
+        title: Text(_selectedIndex == 0 ? 'Transacciones' : 'Clientes', style: const TextStyle(color: Colors.white),),
         backgroundColor: Colors.red[500],
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage>
         onPageChanged: _onPageChanged,
         children: const [
           TransaccionesView(),
-          ApiKeysView(),
+          ClientesView(),
         ],
       ),
       floatingActionButton:
