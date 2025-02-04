@@ -49,12 +49,12 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final authProvider = sl<AuthProvider>();
     final usuario = authProvider.user;
-    print('Usuario desde home_page ---------> $usuario');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Transacciones' : 'API Keys'),
+        title: Text(_selectedIndex == 0 ? 'Transacciones' : 'API Keys', style: const TextStyle(color: Colors.white),),
         backgroundColor: Colors.red[500],
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: _buildDrawer(context, usuario),
       body: PageView(
@@ -70,16 +70,17 @@ class _HomePageState extends State<HomePage>
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onNavBarTapped,
+        elevation: 5,
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.list),
-            selectedIcon: Icon(Icons.list, color: Colors.red),
+            icon: Icon(Icons.list_rounded),
+            selectedIcon: Icon(Icons.list_rounded, color: Colors.red),
             label: 'Transacciones',
           ),
           NavigationDestination(
-            icon: Icon(Icons.vpn_key),
-            selectedIcon: Icon(Icons.vpn_key, color: Colors.red),
-            label: 'API Keys',
+            icon: Icon(Icons.business_rounded),
+            selectedIcon: Icon(Icons.business_rounded, color: Colors.red),
+            label: 'Clientes',
           ),
         ],
         backgroundColor: Colors.white,
@@ -95,8 +96,8 @@ class _HomePageState extends State<HomePage>
         // Acción para agregar algo nuevo
       },
       backgroundColor: Colors.red[500],
-      icon: const Icon(Icons.add),
-      label: const Text("Nueva API Key"),
+      icon: const Icon(Icons.person_add_alt_1_rounded),
+      label: const Text("Nuevo Cliente"),
     );
   }
 
