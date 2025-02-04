@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ApiKeysView extends StatelessWidget {
-  const ApiKeysView({super.key});
+class ClientesView extends StatelessWidget {
+  const ClientesView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Api Keys'),
+      child: Text('Clientes View'),
     );
   }
 }
