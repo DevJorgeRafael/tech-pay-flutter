@@ -6,6 +6,9 @@ class IsLoggedInUseCase {
   IsLoggedInUseCase(this.repository);
 
   Future<bool> call() async {
-    return await repository.isLoggedIn();
+    final token = await repository.getToken();
+    if (token == null || token.isEmpty) return false;
+
+    return await repository.validateToken(token);
   }
 }

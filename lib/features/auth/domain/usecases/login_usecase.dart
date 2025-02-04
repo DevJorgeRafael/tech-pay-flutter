@@ -1,21 +1,21 @@
 import '../repositories/auth_repository.dart';
-import '../entities/usuario.dart';
+import '../entities/usuario_entity.dart';
 
 class LoginUseCase {
   final AuthRepository repository;
 
   LoginUseCase(this.repository);
 
-  Future<Usuario> call(String email, String password) async {
+  Future<UserEntity> call(String email, String password) async {
     // Llama al repositorio y obtiene un UserModel
     final userModel = await repository.login(email, password);
 
     // Convierte el UserModel a una entidad User (si es necesario)
-    return Usuario(
-      usuarioId: userModel.usuarioId,
+    return UserEntity(
+      userId: userModel.userId,
       usuarioNombre: userModel.usuarioNombre,
-      usuarioCorreo: userModel.usuarioCorreo,
-      usuarioRol: userModel.usuarioRol,
+      userEmail: userModel.userEmail,
+      userRole: userModel.userRole,
     );
   }
 }

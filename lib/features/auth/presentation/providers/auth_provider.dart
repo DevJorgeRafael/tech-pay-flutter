@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/usuario.dart';
+import '../../domain/entities/usuario_entity.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/is_logged_in_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
@@ -18,8 +18,8 @@ class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Usuario? _user;
-  Usuario? get user => _user;
+  UserEntity? _user;
+  UserEntity? get user => _user;
 
   Future<void> login(String email, String password) async {
     _isLoading = true;
@@ -41,16 +41,11 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> isLoggedIn() async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      return await isLoggedInUseCase();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    final isLogged = await isLoggedInUseCase();
+    print('🔵 isLoggedIn desde AuthProvider: $isLogged');
+    return isLogged;
   }
+
 
   Future<void> loadUser() async {
     final storedUser = await loginUseCase.repository.getStoredUser();
@@ -69,6 +64,8 @@ class AuthProvider with ChangeNotifier {
     try {
       await logoutUseCase();
       _user = null;
+      await loginUseCase.repository.deleteStoredUser();
+      await loginUseCase.repository.deleteToken();
     } catch (e) {
       print('Error en logout: $e');
     } finally {

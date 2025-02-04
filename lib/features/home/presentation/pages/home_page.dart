@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tech_pay/features/auth/domain/entities/usuario.dart';
+import 'package:tech_pay/features/auth/domain/entities/usuario_entity.dart';
 import 'package:tech_pay/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tech_pay/features/home/presentation/views/api_keys_view.dart';
 import 'package:tech_pay/features/home/presentation/views/transacciones_view.dart';
@@ -14,121 +14,120 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _onNavBarTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = sl<AuthProvider>();
     final usuario = authProvider.user;
-    print('usuario desde home_page ---------> $usuario');
-
-    final views = [
-      const TransaccionesView(), 
-      const ApiKeysView()
-    ];
+    print('Usuario desde home_page ---------> $usuario');
 
     return Scaffold(
       appBar: AppBar(
-        title: _selectedIndex == 0
-            ? const Text('Transacciones')
-            : const Text('API Keys'),
+        title: Text(_selectedIndex == 0 ? 'Transacciones' : 'API Keys'),
+        backgroundColor: Colors.red[500],
       ),
       drawer: _buildDrawer(context, usuario),
-      body: views[_selectedIndex],
-
-      floatingActionButton: _selectedIndex == 1 ? _buildFloatingActionButton() : null,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: const [
+          TransaccionesView(),
+          ApiKeysView(),
+        ],
+      ),
+      floatingActionButton:
+          _selectedIndex == 1 ? _buildFloatingActionButton() : null,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onNavBarTapped,
+        destinations: const [
+          NavigationDestination(
             icon: Icon(Icons.list),
+            selectedIcon: Icon(Icons.list, color: Colors.red),
             label: 'Transacciones',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.vpn_key),
+            selectedIcon: Icon(Icons.vpn_key, color: Colors.red),
             label: 'API Keys',
           ),
         ],
-        selectedItemColor: Colors.red[500],
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        indicatorColor: Colors.red.withOpacity(0.1),
+        surfaceTintColor: Colors.white,
       ),
     );
   }
 
-  Widget? _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {},
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        // Acción para agregar algo nuevo
+      },
       backgroundColor: Colors.red[500],
-      child: const Icon(Icons.add),
+      icon: const Icon(Icons.add),
+      label: const Text("Nueva API Key"),
     );
   }
 
-  Widget _buildDrawer(BuildContext context, Usuario? usuario) {
+  Widget _buildDrawer(BuildContext context, UserEntity? usuario) {
     return Drawer(
       child: Column(
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.red[500],
+          UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: Colors.red[500]),
+            accountName: Text(
+              usuario?.usuarioNombre ?? 'Invitado',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.person, size: 60, color: Colors.white),
-                const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      usuario?.usuarioId.toString() ?? '0',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      usuario?.usuarioNombre ?? 'Invitado',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      usuario?.usuarioCorreo ?? 'Sin email',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.settings),
-                  title: const Text('Configuración'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Navegar a configuración (si se implementa)
-                  },
-                ),
-              ],
+            accountEmail: Text(usuario?.userEmail ?? 'Sin email'),
+            currentAccountPicture: const CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, size: 50, color: Colors.red),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Cerrar Sesión'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Configuración'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Cerrar Sesión',
+                style: TextStyle(color: Colors.red)),
             onTap: () async {
               await Provider.of<AuthProvider>(context, listen: false).logout();
               context.go('/login');
