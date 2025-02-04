@@ -13,10 +13,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final SharedPreferences sharedPreferences;
 
   AuthRemoteDataSourceImpl({required this.storage, required this.sharedPreferences});
-
   @override
   Future<UserModel> login(String email, String password) async {
-    print('🌍 ENV: -------------> ${dio.options.baseUrl}');
 
     try {
       final response = await dio.post('/auth/login', data: {
@@ -24,15 +22,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'password': password,
       });
 
-      print('✅ Respuesta del servidor: ${response.data}');
-
       if (response.statusCode == 201) {
         // 🔥 Asegurar que la respuesta es un Map<String, dynamic>
         if (response.data is Map<String, dynamic>) {
           return UserModel.fromJson(
               response.data); // ✅ Devuelve UserModel correctamente
         } else {
-          print('⚠️ Error: La respuesta del servidor no es un JSON válido');
           throw AuthException('Error inesperado en la autenticación.');
         }
       } else {
@@ -51,7 +46,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
         throw AuthException('⚠️ Error al iniciar sesión: ${e.message}');
       } else {
-        print('🔥 Error desconocido: $e');
         throw AuthException('⚠️ Error inesperado al conectar con el servidor.');
       }
     }

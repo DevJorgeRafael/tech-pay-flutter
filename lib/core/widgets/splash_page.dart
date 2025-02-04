@@ -26,8 +26,6 @@ class SplashPage extends StatelessWidget {
     try {
       await Future.delayed(const Duration(seconds: 1)); // 🔥 Pequeño delay para evitar carga rápida sin datos
       final isLoggedIn = await authProvider.isLoggedIn();
-      print('🔍 isLoggedIn desde SplashPage: $isLoggedIn');
-      print('👤 Usuario actual en AuthProvider: ${authProvider.user}');
 
       if (context.mounted) {
         if (isLoggedIn && authProvider.user != null) {
