@@ -17,21 +17,46 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Usuario> login(String email, String password) async {
+    print('🌍 ENV: -------------> ${dio.options.baseUrl}');
+
     try {
       final response = await dio.post('/auth/login', data: {
         'correo': email,
         'password': password,
       });
 
-      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+      print('✅ Respuesta del servidor: ${response.data}');
+
+      if (response.statusCode == 201) {
         return Usuario.fromJson(response.data['usuario']);
       } else {
-        throw Exception('Error al iniciar sesión: ${response.data['message']}');
+        throw Exception('Error desconocido en la autenticación');
       }
     } catch (e) {
-      throw Exception('Error al conectar con el servidor: $e');
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+        final responseData = e.response?.data;
+
+        print('❌ DioException: ${e.message}');
+        print('📌 Código de estado: $statusCode');
+        print('📍 URL: ${e.requestOptions.uri}');
+        print('⚠️ Respuesta del servidor: $responseData');
+
+        if (statusCode == 401 && responseData is Map<String, dynamic>) {
+          if (responseData['code'] == 1) {
+            throw AuthException(
+                '❌ Credenciales inválidas. Verifica tu correo y contraseña.');
+          }
+        }
+        throw AuthException('⚠️ Error al iniciar sesión: ${e.message}');
+      } else {
+        print('🔥 Error desconocido: $e');
+        throw AuthException('⚠️ Error inesperado al conectar con el servidor.');
+      }
     }
   }
+
+
 
   @override
   Future<void> logout() async {
@@ -84,4 +109,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if(userData == null) return null;
     return UserModel.fromJson(jsonDecode(userData));
   }
+}
+
+// Nueva Clase de Excepción
+class AuthException implements Exception {
+  final String message;
+  AuthException(this.message);
+  @override
+  String toString() => message; // Evita que se muestre "Exception: ..."
 }

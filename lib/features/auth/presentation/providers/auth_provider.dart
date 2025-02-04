@@ -33,7 +33,7 @@ class AuthProvider with ChangeNotifier {
       _user = user;
       notifyListeners();
     } catch (e) {
-      throw Exception('Error en el inicio de sesión: $e');
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

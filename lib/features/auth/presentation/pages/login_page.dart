@@ -29,23 +29,32 @@ class _LoginPageState extends State<LoginPage> {
     final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Por favor, ingrese el correo y la contraseña')),
-      );
+      showSnackBar(context, 'Por favor, ingrese el correo y la contraseña',
+          isError: true);
       return;
     }
 
     try {
       await authProvider.login(email, password);
-      // Si el login es exitoso, navegar a la página principal
-      context.go('/home');
+      context.go('/home'); // Redirigir si es exitoso
     } catch (e) {
-      // Mostrar un mensaje de error si falla el login
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      showSnackBar(context, e.toString(), isError: true);
     }
+  }
+
+  // Función para mostrar SnackBar mejorado
+  void showSnackBar(BuildContext context, String message,
+      {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        duration: const Duration(seconds: 4), // Hace que dure más tiempo
+      ),
+    );
   }
 
   @override
