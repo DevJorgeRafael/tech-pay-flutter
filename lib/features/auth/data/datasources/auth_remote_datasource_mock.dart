@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_pay/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:tech_pay/features/auth/data/models/user_model.dart';
-import 'package:tech_pay/features/auth/domain/entities/usuario.dart';
 
 class AuthRemoteDatasourceMock implements AuthRemoteDataSource {
   final FlutterSecureStorage storage;
@@ -14,7 +13,7 @@ class AuthRemoteDatasourceMock implements AuthRemoteDataSource {
 
   @override
   @override
-  Future<Usuario> login(String email, String password) async {
+  Future<UserModel> login(String email, String password) async {
      if (email == "adminPP@technova.com" && password == "password123") {
       final jsonResponse = {
         "code": 2,
@@ -30,7 +29,7 @@ class AuthRemoteDatasourceMock implements AuthRemoteDataSource {
       final userModel = UserModel.fromJson(jsonResponse);
       await saveToken(userModel.token);
       await saveUser(userModel);
-      return userModel.usuario;
+      return userModel;
 
     } else {
       throw Exception("Credenciales incorrectas");

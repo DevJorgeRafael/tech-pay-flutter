@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tech_pay/features/auth/domain/entities/usuario.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
 import '../models/user_model.dart';
 import 'auth_remote_datasource.dart';
@@ -16,7 +15,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.storage, required this.sharedPreferences});
 
   @override
-  Future<Usuario> login(String email, String password) async {
+  Future<UserModel> login(String email, String password) async {
     print('🌍 ENV: -------------> ${dio.options.baseUrl}');
 
     try {
@@ -28,19 +27,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       print('✅ Respuesta del servidor: ${response.data}');
 
       if (response.statusCode == 201) {
-        return Usuario.fromJson(response.data['usuario']);
+        // 🔥 Asegurar que la respuesta es un Map<String, dynamic>
+        if (response.data is Map<String, dynamic>) {
+          return UserModel.fromJson(
+              response.data); // ✅ Devuelve UserModel correctamente
+        } else {
+          print('⚠️ Error: La respuesta del servidor no es un JSON válido');
+          throw AuthException('Error inesperado en la autenticación.');
+        }
       } else {
-        throw Exception('Error desconocido en la autenticación');
+        throw AuthException('Error desconocido en la autenticación.');
       }
     } catch (e) {
       if (e is DioException) {
         final statusCode = e.response?.statusCode;
         final responseData = e.response?.data;
-
-        print('❌ DioException: ${e.message}');
-        print('📌 Código de estado: $statusCode');
-        print('📍 URL: ${e.requestOptions.uri}');
-        print('⚠️ Respuesta del servidor: $responseData');
 
         if (statusCode == 401 && responseData is Map<String, dynamic>) {
           if (responseData['code'] == 1) {
@@ -55,6 +56,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
     }
   }
+
 
 
 
