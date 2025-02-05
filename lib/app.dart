@@ -7,6 +7,7 @@ import 'package:tech_pay/features/home/presentation/providers/clientes_provider.
 import 'package:tech_pay/features/home/presentation/providers/transacciones_provider.dart';
 import 'package:tech_pay/injection_container.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,6 +29,14 @@ class MyApp extends StatelessWidget {
         title: 'Tech Pay',
         theme: appTheme.getTheme(),
         routerConfig: AppRouter.router,
+        supportedLocales: const [
+          Locale('es', 'ES'),
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
       )
     );
   }
