@@ -1,7 +1,6 @@
 
 import 'package:tech_pay/features/home/data/models/cliente_model.dart';
 import 'package:tech_pay/features/home/domain/entities/apikey_entity.dart';
-import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 
 abstract class ClienteRemoteDataSource {
   Future<List<ClienteModel>> getClientes();

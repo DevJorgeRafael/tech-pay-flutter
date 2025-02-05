@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:tech_pay/features/home/data/datasources/cliente_remote_datasource.dart';
 import 'package:tech_pay/features/home/data/models/cliente_model.dart';
 import 'package:tech_pay/features/home/domain/entities/apikey_entity.dart';
-import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
 
 class ClienteRemoteDatasourceImpl implements ClienteRemoteDataSource{
