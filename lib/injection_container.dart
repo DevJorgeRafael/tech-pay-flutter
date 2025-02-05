@@ -4,11 +4,20 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_pay/core/theme/app_theme.dart';
 import 'package:tech_pay/features/auth/data/datasources/auth_remote_datasource_mock.dart';
+import 'package:tech_pay/features/home/data/datasources/cliente_remote_datasource.dart';
+import 'package:tech_pay/features/home/data/datasources/cliente_remote_datasource_impl.dart';
 import 'package:tech_pay/features/home/data/datasources/transaccion_remote_datasource.dart';
 import 'package:tech_pay/features/home/data/datasources/transaccion_remote_datasource_impl.dart';
+import 'package:tech_pay/features/home/data/repositories/cliente_repository_impl.dart';
 import 'package:tech_pay/features/home/data/repositories/transaccion_repository_impl.dart';
+import 'package:tech_pay/features/home/domain/repositories/cliente_repository.dart';
 import 'package:tech_pay/features/home/domain/repositories/transaccion_repository.dart';
+import 'package:tech_pay/features/home/domain/usecases/add_cliente_usecase.dart';
+import 'package:tech_pay/features/home/domain/usecases/get_cliente_usecase.dart';
+import 'package:tech_pay/features/home/domain/usecases/get_clientes_usecase.dart';
 import 'package:tech_pay/features/home/domain/usecases/get_transacciones_usecase.dart';
+import 'package:tech_pay/features/home/domain/usecases/update_cliente_usecase.dart';
+import 'package:tech_pay/features/home/presentation/providers/clientes_provider.dart';
 import 'package:tech_pay/features/home/presentation/providers/transacciones_provider.dart';
 import 'package:tech_pay/shared/services/auth_token_service.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
@@ -46,6 +55,9 @@ Future<void> init() async {
   sl.registerLazySingleton<TransaccionRemoteDataSource>(
       () => TransaccionRemoteDatasourceImpl());
 
+  sl.registerLazySingleton<ClienteRemoteDataSource>(
+      () => ClienteRemoteDatasourceImpl());
+
 
   // -------------------- Repositorios --------------------
   sl.registerLazySingleton<AuthRepository>(
@@ -53,6 +65,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<TransaccionRepository>(
       () => TransaccionRepositoryImpl(remoteDataSource: sl()));
+
+  sl.registerLazySingleton<ClienteRepository>(
+      () => ClienteRepositoryImpl(remoteDataSource: sl()));
   
   
   // -------------------- Casos de Uso --------------------
@@ -61,6 +76,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
 
   sl.registerLazySingleton(() => GetTransaccionesUseCase(sl()));
+
+  sl.registerLazySingleton(() => GetClientesUsecase(sl()));
+  sl.registerLazySingleton(() => GetClienteUsecase(sl()));
+  sl.registerLazySingleton(() => AddClienteUsecase(sl()));
+  sl.registerLazySingleton(() => UpdateClienteUsecase(sl()));
 
   // -------------------- Providers -----------------------
   sl.registerLazySingleton<AuthProvider>(
@@ -73,4 +93,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<TransaccionesProvider>(
     () => TransaccionesProvider(getTransaccionesUseCase: sl()));
+
+  sl.registerLazySingleton<ClientesProvider>(
+    () => ClientesProvider(
+      getClientesUsecase: sl(),
+      getClienteUsecase: sl(),
+      addClienteUsecase: sl(),
+      updateClienteUsecase: sl(),
+    ));
 }
