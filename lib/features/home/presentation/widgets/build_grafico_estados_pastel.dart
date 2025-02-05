@@ -38,7 +38,7 @@ Widget buildGraficoEstadosPastel(BuildContext context) {
 
   return Column(
     crossAxisAlignment:
-        CrossAxisAlignment.center, // 📌 Centra todo horizontalmente
+        CrossAxisAlignment.center, 
     children: [
       SizedBox(
         height: 300, // Ajustar el tamaño del gráfico
@@ -76,12 +76,12 @@ Widget buildGraficoEstadosPastel(BuildContext context) {
       const SizedBox(height: 20),
       Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // 📌 Centra las leyendas
+          mainAxisAlignment: MainAxisAlignment.center, 
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildLegend("Aprobadas", Colors.green, aprobadas),
-            _buildLegend("Pendientes", Colors.blue, pendientes),
-            _buildLegend("Rechazadas", Colors.red, rechazadas),
+            _buildLegend("Aprobadas", Colors.green[400]!, aprobadas),
+            _buildLegend("Pendientes", Colors.blue[400]!, pendientes),
+            _buildLegend("Rechazadas", Colors.red[400]!, rechazadas),
           ],
         ),
       ),
@@ -133,11 +133,11 @@ Widget _buildLegend(String label, Color color, int count) {
 Color _getEstadoColor(String estado) {
   switch (estado.toLowerCase()) {
     case 'transacción aceptada':
-      return Colors.green;
+      return Colors.green[400]!;
     case 'transacción pendiente':
-      return Colors.blue;
+      return Colors.blue[400]!;
     case 'transacción rechazada': // Rechazadas ahora incluyen TODO lo que no es Aprobado ni Pendiente
-      return Colors.red;
+      return Colors.red[400]!;
     default:
       return Colors.grey;
   }
