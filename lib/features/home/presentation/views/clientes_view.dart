@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tech_pay/features/home/presentation/providers/clientes_provider.dart';
 import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
+import 'package:go_router/go_router.dart';
 
 class ClientesView extends StatefulWidget {
   const ClientesView({super.key});
@@ -76,7 +77,7 @@ class _ClientesViewState extends State<ClientesView> {
         trailing:
             const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
         onTap: () {
-          // Acción al tocar un cliente (ej. ver detalles)
+          context.push('/cliente/${cliente.clienteId}', extra: cliente);
         },
       ),
     );

@@ -14,7 +14,7 @@ class ClienteRemoteDatasourceImpl implements ClienteRemoteDataSource{
       final response = await dio.get('/clientes');
       return List<ClienteModel>.from(response.data.map((x) => ClienteModel.fromJson(x)));
     } catch (e) {
-      throw Exception('Error al obtener clientes');
+      throw Exception('Error al obtener clientes: $e');
     }
   }
 
