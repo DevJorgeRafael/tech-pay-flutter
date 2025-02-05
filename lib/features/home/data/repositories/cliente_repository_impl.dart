@@ -10,8 +10,8 @@ class ClienteRepositoryImpl implements ClienteRepository {
   ClienteRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<void> addCliente(String clienteNombre) async {
-    await remoteDataSource.addCliente(clienteNombre);
+  Future<ClienteEntity> addCliente(String clienteNombre) async {
+    return await remoteDataSource.addCliente(clienteNombre);
   }
 
   @override

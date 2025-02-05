@@ -51,10 +51,19 @@ class ClientesProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addCliente(String clienteNombre) async {
-    await addClienteUsecase(clienteNombre);
-    await fetchClientes();
+ Future<void> addCliente(String clienteNombre) async {
+    try {
+      final nuevoCliente = await addClienteUsecase(clienteNombre);
+
+      // 🔥 Agregar el nuevo cliente a la lista local sin esperar un nuevo fetch
+      _clientes.insert(0, nuevoCliente);
+
+      notifyListeners(); // 🔥 Notificar a la UI inmediatamente
+    } catch (e) {
+      print('❌ Error al agregar cliente: $e');
+    }
   }
+
 
   Future<void> updateCliente(int id, String clienteNombre) async {
     await updateClienteUsecase(id, clienteNombre);

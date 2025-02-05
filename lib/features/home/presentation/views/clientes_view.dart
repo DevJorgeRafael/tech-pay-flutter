@@ -27,33 +27,56 @@ class _ClientesViewState extends State<ClientesView> {
 
   @override
   Widget build(BuildContext context) {
-    final clientesProvider = Provider.of<ClientesProvider>(context);
+    return Consumer<ClientesProvider>(
+      builder: (context, clientesProvider, child) {
+        return Stack(
+          children: [
+            clientesProvider.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : clientesProvider.clientes.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No hay clientes registrados.',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _refreshData,
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          itemCount: clientesProvider.clientes.length + 1,
+                          separatorBuilder: (_, __) => const Divider(height: 8),
+                          itemBuilder: (context, index) {
+                            if (index == clientesProvider.clientes.length) {
+                              return const SizedBox(height: 80);
+                            }
 
-    return clientesProvider.isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : clientesProvider.clientes.isEmpty
-            ? const Center(
-                child: Text(
-                  'No hay clientes registrados.',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: _refreshData,
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  itemCount: clientesProvider.clientes.length,
-                  separatorBuilder: (_, __) => const Divider(height: 8),
-                  itemBuilder: (context, index) {
-                    final cliente = clientesProvider.clientes[index];
-                    return _buildClienteCard(cliente);
-                  },
-                ),
-              );
+                            final cliente = clientesProvider.clientes[index];
+                            return _buildClienteCard(cliente);
+                          },
+                        ),
+                      ),
+
+            // 🔥 Floating Action Button para agregar un nuevo cliente
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: FloatingActionButton.extended(
+                onPressed: () => _mostrarDialogCrearCliente(context),
+                backgroundColor: Colors.red[500],
+                icon: const Icon(Icons.person_add_alt_1_rounded),
+                label: const Text("Nuevo Cliente"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
+
 
   Widget _buildClienteCard(ClienteEntity cliente) {
     return Card(
@@ -80,6 +103,51 @@ class _ClientesViewState extends State<ClientesView> {
           context.push('/cliente/${cliente.clienteId}', extra: cliente);
         },
       ),
+    );
+  }
+
+  void _mostrarDialogCrearCliente(BuildContext context) {
+    final TextEditingController nombreController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Nuevo Cliente"),
+          content: TextField(
+            controller: nombreController,
+            decoration: const InputDecoration(
+              labelText: "Nombre del Cliente",
+              hintText: "Ejemplo: Empresa XYZ",
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancelar"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final nombre = nombreController.text.trim();
+                if (nombre.isNotEmpty) {
+                  final clientesProvider =
+                      Provider.of<ClientesProvider>(context, listen: false);
+
+                  await clientesProvider.addCliente(nombre);
+
+                  // 🔥 Forzar la reconstrucción de la UI
+                  if (mounted) {
+                    setState(() {});
+                  }
+
+                  Navigator.pop(context); 
+                }
+              },
+              child: const Text("Crear"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

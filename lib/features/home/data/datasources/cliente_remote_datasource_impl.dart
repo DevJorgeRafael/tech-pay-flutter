@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:tech_pay/features/home/data/datasources/cliente_remote_datasource.dart';
 import 'package:tech_pay/features/home/data/models/cliente_model.dart';
 import 'package:tech_pay/features/home/domain/entities/apikey_entity.dart';
+import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 import 'package:tech_pay/shared/services/dio_client.dart';
 
 class ClienteRemoteDatasourceImpl implements ClienteRemoteDataSource{
@@ -30,13 +31,15 @@ class ClienteRemoteDatasourceImpl implements ClienteRemoteDataSource{
   }
 
   @override
-  Future<void> addCliente(String clienteNombre) async {
+  Future<ClienteModel> addCliente(String clienteNombre) async {
     try {
-      await dio.post('/clientes', data: {
+      final res = await dio.post('/clientes', data: {
         'clienteNombre': clienteNombre
       });
+      return ClienteModel.fromJson(res.data);
     } catch (e) {
       print('❌ Error al agregar cliente: $e');
+      throw Exception('Error al agregar cliente: $e');
     }
   }
 

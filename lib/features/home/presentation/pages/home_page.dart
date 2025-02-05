@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage>
           ClientesView(),
         ],
       ),
-      floatingActionButton:
-          _selectedIndex == 1 ? _buildFloatingActionButton() : null,
+      // floatingActionButton:
+      //     _selectedIndex == 1 ? _buildFloatingActionButton() : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onNavBarTapped,
@@ -90,16 +90,16 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        // Acción para agregar algo nuevo
-      },
-      backgroundColor: Colors.red[500],
-      icon: const Icon(Icons.person_add_alt_1_rounded),
-      label: const Text("Nuevo Cliente"),
-    );
-  }
+  // Widget _buildFloatingActionButton() {
+  //   return FloatingActionButton.extended(
+  //     onPressed: () {
+  //       // Acción para agregar algo nuevo
+  //     },
+  //     backgroundColor: Colors.red[500],
+  //     icon: const Icon(Icons.person_add_alt_1_rounded),
+  //     label: const Text("Nuevo Cliente"),
+  //   );
+  // }
 
   Widget _buildDrawer(BuildContext context, UserEntity? usuario) {
     return Drawer(

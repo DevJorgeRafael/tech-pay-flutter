@@ -1,4 +1,5 @@
 
+import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 import 'package:tech_pay/features/home/domain/repositories/cliente_repository.dart';
 
 class AddClienteUsecase {
@@ -6,7 +7,7 @@ class AddClienteUsecase {
 
   AddClienteUsecase(this.repository);
 
-  Future<void> call(String clienteNombre) async {
+  Future<ClienteEntity> call(String clienteNombre) async {
     return await repository.addCliente(clienteNombre);
   }
 } 

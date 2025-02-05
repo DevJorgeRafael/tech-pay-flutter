@@ -6,7 +6,7 @@ import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 abstract class ClienteRemoteDataSource {
   Future<List<ClienteModel>> getClientes();
   Future<ClienteModel> getCliente(int id);
-  Future<void> addCliente(String clienteNombre);
+  Future<ClienteModel> addCliente(String clienteNombre);
   Future<void> updateCliente(int id, String clienteNombre);
   Future<void> updateApikeyEstado(String apikeyId, bool nuevoEstado);
   Future<ApikeyEntity> addApikey(String clienteId, String descripcion);
