@@ -9,7 +9,7 @@ class TransaccionEntity {
   final String transaccionMoneda;
   final String transaccionDescripcion;
   final EstadoTransaccionEntity estadoTransaccion;
-  final Cliente cliente;
+  final ClienteEntity cliente;
 
   TransaccionEntity({
     required this.transaccionId,

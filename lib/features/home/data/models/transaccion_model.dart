@@ -17,7 +17,7 @@ class TransaccionModel {
   final String transaccionMoneda;
   final String transaccionDescripcion;
   final EstadoTransaccionEntity estadoTransaccion;
-  final Cliente cliente;
+  final ClienteEntity cliente;
 
   TransaccionModel({
     required this.transaccionId,
@@ -37,7 +37,7 @@ class TransaccionModel {
         transaccionMoneda: json["transaccionMoneda"],
         transaccionDescripcion: json["transaccionDescripcion"],
         estadoTransaccion: EstadoTransaccionEntity.fromJson(json["estadotransaccion"]),
-        cliente: Cliente.fromJson(json["cliente"]),
+        cliente: ClienteEntity.fromJson(json["cliente"]),
       );
 
   Map<String, dynamic> toJson() => {
