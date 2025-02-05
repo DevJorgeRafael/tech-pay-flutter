@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tech_pay/features/home/domain/entities/transaccion_entity.dart';
 
-Widget BuildTransaccionCard(TransaccionEntity transaccion) {
+Widget buildTransaccionCard(TransaccionEntity transaccion) {
   final colorEstado =
       _getEstadoColor(transaccion.estadoTransaccion.estadoNombre);
   final iconoEstado =

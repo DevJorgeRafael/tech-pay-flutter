@@ -47,7 +47,7 @@ class _TransaccionesViewState extends State<TransaccionesView> {
                 itemBuilder: (context, index) {
                   final transaccion =
                       transaccionesProvider.transacciones[index];
-                  return BuildTransaccionCard(transaccion);
+                  return buildTransaccionCard(transaccion);
                 },
               ),
             ),

@@ -22,9 +22,7 @@ class ClientesProvider with ChangeNotifier {
     required this.getClienteUsecase,
     required this.addClienteUsecase,
     required this.updateClienteUsecase,
-  }) {
-    print("✅ ClientesProvider inicializado correctamente");
-  }
+  });
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;

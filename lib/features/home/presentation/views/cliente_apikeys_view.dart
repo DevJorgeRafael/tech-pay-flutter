@@ -70,7 +70,7 @@ class ClienteApikeysView extends StatelessWidget {
               right: 20,
               child: FloatingActionButton.extended(
                 onPressed: () => _mostrarDialogCrearApiKey(context),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Colors.red,
                 icon: const Icon(Icons.add_rounded),
                 label: const Text("Nueva API Key"),
               ),

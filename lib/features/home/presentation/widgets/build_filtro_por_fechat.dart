@@ -131,7 +131,7 @@ class _FiltroPorFechaWidgetState extends State<FiltroPorFechaWidget> {
       itemCount: transaccionesFiltradas.length,
       itemBuilder: (context, index) {
         final transaccion = transaccionesFiltradas[index];
-        return BuildTransaccionCard(transaccion); 
+        return buildTransaccionCard(transaccion); 
       },
     );
   }
