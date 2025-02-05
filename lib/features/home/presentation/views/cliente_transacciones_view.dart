@@ -12,6 +12,8 @@ class ClienteTransaccionesView extends StatelessWidget {
     return cliente.transacciones.isEmpty
         ? const Center(child: Text('No hay transacciones registradas.'))
         : ListView.builder(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
             itemCount: cliente.transacciones.length,
             itemBuilder: (context, index) {
               final transaccion = cliente.transacciones[index];
