@@ -42,14 +42,12 @@ class AuthProvider with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     final isLogged = await isLoggedInUseCase();
-    print('🔵 isLoggedIn desde AuthProvider: $isLogged');
     return isLogged;
   }
 
 
   Future<void> loadUser() async {
     final storedUser = await loginUseCase.repository.getStoredUser();
-    print('Usuario almacenado desde auth_provider ---------> $storedUser');
     if (storedUser != null) {
       _user = storedUser;
       notifyListeners();

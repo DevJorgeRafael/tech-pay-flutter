@@ -68,7 +68,6 @@ class AuthRemoteDatasourceMock implements AuthRemoteDataSource {
   Future<void> saveUser(UserModel user) async {
     final userData = jsonEncode(user.toJson());
     await sharedPreferences.setString('user', userData);
-    print('Usuario guardado en el mock ----------> $userData');
   }
 
   @override
@@ -78,8 +77,7 @@ class AuthRemoteDatasourceMock implements AuthRemoteDataSource {
 
   @override
   Future<UserModel?> getUser() async {
-    final userData = sharedPreferences.getString('user'); // Recupera el usuario
-    print('Datos recuperados de SharedPreferences: $userData');
+    final userData = sharedPreferences.getString('user'); 
     if (userData == null) return null;
 
     try {

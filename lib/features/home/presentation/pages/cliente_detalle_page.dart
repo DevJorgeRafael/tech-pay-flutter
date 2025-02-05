@@ -30,7 +30,7 @@ class _ClienteDetallePageState extends State<ClienteDetallePage>
           widget.cliente.clienteNombre,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.red,
         iconTheme: const IconThemeData(
             color: Colors.white), // Hace que el botón de retroceso sea blanco
         bottom: TabBar(
