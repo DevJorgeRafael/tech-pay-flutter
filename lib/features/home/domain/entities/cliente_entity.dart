@@ -1,13 +1,13 @@
-class Cliente {
+class ClienteEntity {
   final String clienteId;
   final String clienteNombre; 
 
-  Cliente({
+  ClienteEntity({
     required this.clienteId,
     required this.clienteNombre,
   });
 
-  factory Cliente.fromJson(Map<String, dynamic> json) => Cliente(
+  factory ClienteEntity.fromJson(Map<String, dynamic> json) => ClienteEntity(
         clienteId: json["clienteId"],
         clienteNombre: json["clienteNombre"], 
       );
