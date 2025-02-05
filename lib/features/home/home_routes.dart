@@ -38,7 +38,7 @@ class HomeRoutes {
     GoRoute(
       path: '/reports',
       builder: (context, state) {
-        final String initialTab = state.extra as String ?? "grafico";
+        final String initialTab = state.extra as String;
         return ReportsPage(initialTab: initialTab);
       }
     )

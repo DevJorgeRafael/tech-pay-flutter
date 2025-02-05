@@ -52,7 +52,7 @@ class _ReportsPageState extends State<ReportsPage>
         controller: _tabController,
         children: [
           buildGraficoEstadosPastel(context), 
-          buildFiltroPorFecha(context), 
+          FiltroPorFechaWidget(), 
           buildRankingClientes(context),
         ],
       ),
