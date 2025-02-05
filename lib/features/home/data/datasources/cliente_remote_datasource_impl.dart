@@ -50,4 +50,16 @@ class ClienteRemoteDatasourceImpl implements ClienteRemoteDataSource{
     }
   }
 
+  @override
+  Future<void> updateApikeyEstado(String apikeyId, bool nuevoEstado) async {
+    try {
+      await dio.put('/apikeys/$apikeyId', data: {
+        'apikey_estado': nuevoEstado
+      });
+    } catch (e) {
+      print('❌ Error al actualizar estado de apikey: $e');
+      throw Exception('Error al actualizar estado de apikey: $e');
+    }
+  }
+
 }

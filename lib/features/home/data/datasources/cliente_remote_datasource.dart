@@ -7,4 +7,5 @@ abstract class ClienteRemoteDataSource {
   Future<ClienteModel> getCliente(int id);
   Future<void> addCliente(String clienteNombre);
   Future<void> updateCliente(int id, String clienteNombre);
+  Future<void> updateApikeyEstado(String apikeyId, bool nuevoEstado);
 }

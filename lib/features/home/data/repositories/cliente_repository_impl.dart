@@ -28,4 +28,9 @@ class ClienteRepositoryImpl implements ClienteRepository {
     return await remoteDataSource.updateCliente(id, clienteNombre);
   }
 
+  @override
+  Future<void> updateApikeyEstado(String apikeyId, bool nuevoEstado) async {
+    return await remoteDataSource.updateApikeyEstado(apikeyId, nuevoEstado);
+  }
+
 }

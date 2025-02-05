@@ -96,6 +96,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton<ClientesProvider>(
     () => ClientesProvider(
+      clienteRepository: sl(),
       getClientesUsecase: sl(),
       getClienteUsecase: sl(),
       addClienteUsecase: sl(),
