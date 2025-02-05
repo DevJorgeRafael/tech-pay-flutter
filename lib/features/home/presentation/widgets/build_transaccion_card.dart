@@ -71,7 +71,6 @@ Color _getEstadoColor(String estado) {
   }
 }
 
-// 🔄 Función para obtener el icono del estado
 IconData _getEstadoIcon(String estado) {
   switch (estado.toLowerCase()) {
     case 'transacción aceptada':
