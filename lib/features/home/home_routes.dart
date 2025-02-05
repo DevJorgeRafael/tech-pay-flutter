@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tech_pay/features/home/domain/entities/cliente_entity.dart';
 import 'package:tech_pay/features/home/presentation/pages/cliente_detalle_page.dart';
 import 'package:tech_pay/features/home/presentation/pages/home_page.dart';
+import 'package:tech_pay/features/home/presentation/pages/reports_page.dart';
 
 class HomeRoutes {
   static final homeRoutes = [
@@ -33,6 +34,13 @@ class HomeRoutes {
           },
         );
       },
+    ),
+    GoRoute(
+      path: '/reports',
+      builder: (context, state) {
+        final String initialTab = state.extra as String ?? "grafico";
+        return ReportsPage(initialTab: initialTab);
+      }
     )
   ];
 }

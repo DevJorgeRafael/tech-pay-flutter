@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage>
         title: Text(_selectedIndex == 0 ? 'Transacciones' : 'Clientes', style: const TextStyle(color: Colors.white),),
         backgroundColor: Colors.red[500],
         iconTheme: const IconThemeData(color: Colors.white),
+        actions: _selectedIndex == 0 ? _buildReportMenu(context): null,
       ),
       drawer: _buildDrawer(context, usuario),
       body: PageView(
@@ -65,8 +66,6 @@ class _HomePageState extends State<HomePage>
           ClientesView(),
         ],
       ),
-      // floatingActionButton:
-      //     _selectedIndex == 1 ? _buildFloatingActionButton() : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onNavBarTapped,
@@ -89,17 +88,6 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
-
-  // Widget _buildFloatingActionButton() {
-  //   return FloatingActionButton.extended(
-  //     onPressed: () {
-  //       // Acción para agregar algo nuevo
-  //     },
-  //     backgroundColor: Colors.red[500],
-  //     icon: const Icon(Icons.person_add_alt_1_rounded),
-  //     label: const Text("Nuevo Cliente"),
-  //   );
-  // }
 
   Widget _buildDrawer(BuildContext context, UserEntity? usuario) {
     return Drawer(
@@ -138,5 +126,20 @@ class _HomePageState extends State<HomePage>
         ],
       ),
     );
+  }
+
+  List<Widget> _buildReportMenu(BuildContext context) {
+    return [
+      PopupMenuButton<String>(
+        onSelected: (value) {
+          context.push('/reports', extra: value);
+        },
+        itemBuilder: (context) => [
+          const PopupMenuItem(value: 'grafico', child: Text('Gráfico de Estados')),
+          const PopupMenuItem(value: 'fecha', child: Text('Filtrar por Fecha')),
+          const PopupMenuItem(value: 'ranking', child: Text('Ranking de Clientes'))
+        ],
+      )
+    ];
   }
 }

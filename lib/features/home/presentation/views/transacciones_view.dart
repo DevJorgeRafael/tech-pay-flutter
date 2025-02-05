@@ -29,11 +29,17 @@ class _TransaccionesViewState extends State<TransaccionesView> {
   Widget build(BuildContext context) {
     final transaccionesProvider = Provider.of<TransaccionesProvider>(context);
 
+     // Imprime las transacciones y sus estados
+     print('Transacciones en transacciones_view: ${transaccionesProvider.transacciones.length}');
+    for (var transaccion in transaccionesProvider.transacciones) {
+      print("Estado: ${transaccion.estadoTransaccion.estadoNombre}");
+    }
+
     return Scaffold(
       body: transaccionesProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-              onRefresh: _refreshData, // 🔄 Pull to Refresh
+              onRefresh: _refreshData, 
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: transaccionesProvider.transacciones.length,
@@ -47,6 +53,4 @@ class _TransaccionesViewState extends State<TransaccionesView> {
             ),
     );
   }
-
-  
 }
