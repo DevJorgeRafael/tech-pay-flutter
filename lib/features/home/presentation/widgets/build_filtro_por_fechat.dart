@@ -17,7 +17,7 @@ class _FiltroPorFechaWidgetState extends State<FiltroPorFechaWidget> {
     if (_selectedRange == null) {
       return "Seleccione un rango de fechas";
     }
-    return "${DateFormat('dd MMM yyyy').format(_selectedRange!.start)} - ${DateFormat('dd MMM yyyy').format(_selectedRange!.end)}";
+    return "${DateFormat('dd MMM yyyy', 'es_ES').format(_selectedRange!.start)} - ${DateFormat('dd MMM yyyy', 'es_ES').format(_selectedRange!.end)}";
   }
 
   @override
