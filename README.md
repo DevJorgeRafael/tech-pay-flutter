@@ -2,7 +2,7 @@
 Tech-Pay Flutter es una aplicación desarrollada en Flutter que permite a los administradores gestionar clientes y visualizar transacciones de una pasarela de pagos. La aplicación incluye autenticación para el usuario administrador utilizando JWT.
 
 ## 🚀 Características
-Gestión de Clientes: Permite al administrador agregar, editar y eliminar información de los clientes.
+Gestión de Clientes: Permite al administrador agregar, editar información de los clientes.
 Visualización de Transacciones: Muestra un historial detallado de las transacciones realizadas.
 Gestión de API Keys: Administración de claves API relacionadas con los clientes.
 Autenticación Segura: Implementa inicio de sesión para el administrador con autenticación JWT.
