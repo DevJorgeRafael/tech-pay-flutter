@@ -10,13 +10,11 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      fontFamily: 'HelveticaNeue',
+      fontFamily: 'Roboto',
       textTheme: const TextTheme(
-        bodyMedium: TextStyle(fontFamily: 'HelveticaNeue'),
-        bodyLarge: TextStyle(
-            fontFamily: 'HelveticaNeue', fontWeight: FontWeight.normal),
-        titleLarge: TextStyle(
-            fontFamily: 'HelveticaNeue', fontWeight: FontWeight.normal),
+        bodyMedium: TextStyle(fontFamily: 'Roboto'),
+        bodyLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal),
+        titleLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal),
       ),
     );
   }
