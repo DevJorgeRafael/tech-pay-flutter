@@ -178,17 +178,25 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: 20),
-        Text(
-          'Términos y condiciones de uso',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
+        const SizedBox(height: 20),
+        InkWell(
+          onTap: () {
+            context.push('/terminos-condiciones');
+          },
+          child: const Text(
+            'Términos y condiciones de uso',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+              decoration: TextDecoration
+                  .underline, // Agrega subrayado para indicar que es clickeable
+            ),
           ),
         ),
-        SizedBox(height: 10),
+
+        const SizedBox(height: 10),
       ],
     );
   }
